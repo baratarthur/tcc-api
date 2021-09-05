@@ -5,4 +5,4 @@ import swaggerFile from './swagger.json';
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-app.listen(3333, () => console.log("Server is running!"));
+app.listen(80, () => console.log("Server is running!"));
