@@ -7,6 +7,10 @@ const app = express();
 
 app.use(express.json());
 
+app.get("/", (request, response) => {
+    return response.status(200).send({ message: "YaY, API is running!" });
+});
+
 app.use("/users", usersRoutes);
 
 app.use("/street", streetRoutes);
