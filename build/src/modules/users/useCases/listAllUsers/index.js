@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.listAllUsersController = void 0;
+var UsersRepository_1 = require("../../repositories/implementations/UsersRepository");
+var ListAllUsersController_1 = require("./ListAllUsersController");
+var ListAllUsersUseCase_1 = require("./ListAllUsersUseCase");
+var usersRepository = UsersRepository_1.UsersRepository.getInstance();
+var listAllUsersUseCase = new ListAllUsersUseCase_1.ListAllUsersUseCase(usersRepository);
+var listAllUsersController = new ListAllUsersController_1.ListAllUsersController(listAllUsersUseCase);
+exports.listAllUsersController = listAllUsersController;

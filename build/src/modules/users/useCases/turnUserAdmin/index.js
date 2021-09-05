@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.turnUserAdminController = void 0;
+var UsersRepository_1 = require("../../repositories/implementations/UsersRepository");
+var TurnUserAdminController_1 = require("./TurnUserAdminController");
+var TurnUserAdminUseCase_1 = require("./TurnUserAdminUseCase");
+var usersRepository = UsersRepository_1.UsersRepository.getInstance();
+var turnUserAdminUseCase = new TurnUserAdminUseCase_1.TurnUserAdminUseCase(usersRepository);
+var turnUserAdminController = new TurnUserAdminController_1.TurnUserAdminController(turnUserAdminUseCase);
+exports.turnUserAdminController = turnUserAdminController;
