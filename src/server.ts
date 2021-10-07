@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(router);
 
 app.get("/", (request, response) => {
-  return response.status(200).send({ message: "YaY, API is running!" });
+  return response.status(200).send({ message: "YaY, API is running 2.0!" });
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
