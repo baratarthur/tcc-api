@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts",
-    "start": "ts-node src/server.ts",
+    "start": "node dist/src/server.js",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli",
     "postinstall": "tsc",
     "lint:fix": "eslint --fix . --ext ts,tsx"
