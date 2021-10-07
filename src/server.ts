@@ -1,3 +1,4 @@
+import * as dotenv from "dotenv";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import "reflect-metadata";
@@ -7,6 +8,8 @@ import swaggerFile from "./swagger.json";
 
 import "./shared/container";
 import "./database";
+
+dotenv.config({ path: `${__dirname}/.env` });
 
 const port = process.env.PORT || 5000;
 const app = express();
