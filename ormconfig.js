@@ -1,6 +1,6 @@
 module.exports = {
   type: "postgres",
-  URL: process.env.DATABASE_URL,
+  url: process.env.DATABASE_URL,
   port: 5432,
   migrations: ["./src/database/migrations/*.ts"],
   entities: ["./src/modules/**/entities/*.ts"],
