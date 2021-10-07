@@ -21,6 +21,12 @@ class Street {
   @Column()
   quality: string;
 
+  @Column()
+  lat?: number;
+
+  @Column()
+  long?: number;
+
   @OneToMany(() => ReadableData, (data) => data.street, { cascade: true })
   @JoinTable()
   readable_data: ReadableData[];

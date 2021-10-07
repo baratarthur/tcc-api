@@ -8,6 +8,8 @@ import {
 
 interface IRequest {
   street_name: string;
+  lat: number;
+  long: number;
   data: IStreetData[];
 }
 
@@ -18,9 +20,11 @@ class SaveStreetUseCase {
     private streetRepository: IStreetRepository
   ) {}
 
-  async execute({ street_name, data }: IRequest): Promise<Street> {
+  async execute({ street_name, lat, long, data }: IRequest): Promise<Street> {
     const street = await this.streetRepository.save({
       name: street_name,
+      lat,
+      long,
       data,
     });
     return street;

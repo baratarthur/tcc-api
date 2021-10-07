@@ -10,6 +10,8 @@ interface IStreetData {
 
 interface ISaveStreetDataDTO {
   name: string;
+  lat: number;
+  long: number;
   data: IStreetData[];
 }
 

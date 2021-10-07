@@ -16,9 +16,12 @@ module.exports = {
         ? "./src/database/migrations"
         : "./dist/src/database/migrations",
   },
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+  extra:
+    process.env.ENVIRONMENT === "DEV"
+      ? {}
+      : {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
 };

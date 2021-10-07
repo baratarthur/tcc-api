@@ -15,10 +15,7 @@ class ReadableData {
   id?: string;
 
   @Column()
-  lat: number;
-
-  @Column()
-  long: number;
+  num: number;
 
   @Column()
   z_value?: number;

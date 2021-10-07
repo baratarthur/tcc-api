@@ -18,7 +18,7 @@ class StreetRepository implements IStreetRepository {
     return streets;
   }
 
-  async save({ name, data }: ISaveStreetDataDTO): Promise<Street> {
+  async save({ name, lat, long, data }: ISaveStreetDataDTO): Promise<Street> {
     const media = data.reduce(
       (acumulador, valor) => acumulador + valor.z_value / data.length,
       0
@@ -39,6 +39,8 @@ class StreetRepository implements IStreetRepository {
     const street = new Street();
     street.name = name;
     street.quality = this.getStreetQuality(desvioPadrao);
+    street.lat = lat;
+    street.long = long;
     street.readable_data = mappedData;
 
     await this.repository.save(street);

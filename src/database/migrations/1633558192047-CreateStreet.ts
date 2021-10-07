@@ -20,6 +20,14 @@ export class CreateStreet1633558192047 implements MigrationInterface {
             type: "varchar",
           },
           {
+            name: "lat",
+            type: "float",
+          },
+          {
+            name: "long",
+            type: "float",
+          },
+          {
             name: "created_at",
             type: "timestamp",
             default: "now()",

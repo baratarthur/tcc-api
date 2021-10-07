@@ -12,12 +12,8 @@ export class CreateReadableData1633558204271 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: "lat",
-            type: "float",
-          },
-          {
-            name: "long",
-            type: "float",
+            name: "num",
+            type: "int",
           },
           {
             name: "z_value",
