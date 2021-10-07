@@ -2,10 +2,19 @@ module.exports = {
   type: "postgres",
   url: process.env.DATABASE_URL,
   port: 5432,
-  migrations: ["./src/database/migrations/*.ts"],
-  entities: ["./src/modules/**/entities/*.ts"],
+  migrations:
+    process.env.ENVIRONMENT === "DEV"
+      ? ["./src/database/migrations/*.ts"]
+      : ["./dist/src/database/migrations/*.js"],
+  entities:
+    process.env.ENVIRONMENT === "DEV"
+      ? ["./src/modules/**/entities/*.ts"]
+      : ["./dist/src/modules/**/entities/*.js"],
   cli: {
-    migrationsDir: "./src/database/migrations",
+    migrationsDir:
+      process.env.ENVIRONMENT === "DEV"
+        ? "./src/database/migrations"
+        : "./dist/src/database/migrations",
   },
   extra: {
     ssl: {
