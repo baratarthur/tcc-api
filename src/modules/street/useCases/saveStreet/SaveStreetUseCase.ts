@@ -1,14 +1,29 @@
-import { Data, IStreetRepository } from '../../repositories/IStreetRepository';
+import { Street } from "modules/street/entities/Street";
+import { inject, injectable } from "tsyringe";
+
+import {
+  IStreetRepository,
+  IStreetData,
+} from "../../repositories/IStreetRepository";
 
 interface IRequest {
-  data: Data[]
+  street_name: string;
+  data: IStreetData[];
 }
 
+@injectable()
 class SaveStreetUseCase {
-  constructor(private streetRepository: IStreetRepository) {}
+  constructor(
+    @inject("StreetRepository")
+    private streetRepository: IStreetRepository
+  ) {}
 
-  execute({ data }: IRequest) {
-    this.streetRepository.save({ data });
+  async execute({ street_name, data }: IRequest): Promise<Street> {
+    const street = await this.streetRepository.save({
+      name: street_name,
+      data,
+    });
+    return street;
   }
 }
 

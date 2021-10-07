@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  tcc_db:
+    image: postgres
+    container_name: tcc_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=tcc
+    volumes:
+      - pgdata:/data/postgres
+
+volumes:
+  pgdata:
+    driver: local

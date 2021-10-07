@@ -1,68 +1,60 @@
-import { Localization } from "../../models/Localization";
-import { Street } from "../../models/Street";
+import { getRepository, Repository } from "typeorm";
+
+import { ReadableData } from "../../entities/ReadableData";
+import { Street } from "../../entities/Street";
 import { ISaveStreetDataDTO, IStreetRepository } from "../IStreetRepository";
 
 class StreetRepository implements IStreetRepository {
-    private streetsData: Street[];
+  private repository: Repository<Street>;
 
-    private static INSTANCE: StreetRepository;
+  public constructor() {
+    this.repository = getRepository(Street);
+  }
 
-    private constructor() {
-        this.streetsData = [];
+  async getAll(): Promise<Street[]> {
+    const streets = await this.repository.find({
+      relations: ["readable_data"],
+    });
+    return streets;
+  }
+
+  async save({ name, data }: ISaveStreetDataDTO): Promise<Street> {
+    const media = data.reduce(
+      (acumulador, valor) => acumulador + valor.z_value / data.length,
+      0
+    );
+    const variancia = data.reduce(
+      (acumulador, valor) =>
+        acumulador + (media - valor.z_value) ** 2 / data.length,
+      0
+    );
+    const desvioPadrao = Math.sqrt(variancia);
+
+    const mappedData = data.map((data) => {
+      const coordinatesWithData = new ReadableData();
+      Object.assign(coordinatesWithData, data);
+      return coordinatesWithData;
+    });
+
+    const street = new Street();
+    street.name = name;
+    street.quality = this.getStreetQuality(desvioPadrao);
+    street.readable_data = mappedData;
+
+    await this.repository.save(street);
+
+    return street;
+  }
+
+  getStreetQuality(desvioPadrao: number): string {
+    if (desvioPadrao < 0.3) {
+      return "OTIMA";
     }
-
-    save({ data }: ISaveStreetDataDTO) {
-        const media = data.reduce((total, valor) => total+valor.z/data.length, 0);
-        const variancia = data.reduce((total, valor) => total + Math.pow(media - valor.z, 2)/data.length, 0);
-        const desvioPadrao = Math.sqrt(variancia);
-        
-        const street = new Street();
-        const streetLocalization = data.map(streetLoc => {
-            const loc = new Localization();
-
-            Object.assign(loc, {
-                lat: streetLoc.lat,
-                long: streetLoc.long,
-                z: streetLoc.z
-            });
-
-            return loc;
-        });
-
-        Object.assign(street, {
-            points: streetLocalization,
-            quality: this.getStreetQuality(desvioPadrao)
-        });
-
-        this.streetsData.push(street);
+    if (desvioPadrao < 0.6) {
+      return "PRECISA DE REPAROS";
     }
-
-    getRange(locStart: Localization, locEnd: Localization): Street[] {
-        return this.streetsData.filter(street => street.points
-            .some(point =>
-                (point.lat>locStart.lat && point.lat < locEnd.lat)
-                && (point.long<locStart.long && point.long>locEnd.long)
-            )
-        );
-    }
-
-    getStreetQuality(desvioPadrao: number) {
-        if(desvioPadrao<0.3) {
-            return 'OTIMA'
-        } else if(desvioPadrao<0.6) {
-            return 'PRECISA DE REPAROS'
-        } else {
-            return 'VIA EM CONDICOES CRITICAS'
-        }
-    }
-
-    public static getInstance(): StreetRepository {
-        if (!StreetRepository.INSTANCE) {
-            StreetRepository.INSTANCE = new StreetRepository();
-        }
-
-        return StreetRepository.INSTANCE;
-    }
+    return "VIA EM CONDICOES CRITICAS";
+  }
 }
 
 export { StreetRepository };

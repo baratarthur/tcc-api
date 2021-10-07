@@ -1,21 +1,21 @@
-import { Localization } from "../models/Localization";
-import { Street } from "../models/Street";
+import { Street } from "../entities/Street";
 
-interface Data {
-    lat: number;
-    long: number;
-    x: number;
-    y: number;
-    z: number;
+interface IStreetData {
+  lat: number;
+  long: number;
+  x_value: number;
+  y_value: number;
+  z_value: number;
 }
 
 interface ISaveStreetDataDTO {
-    data: Data[];
+  name: string;
+  data: IStreetData[];
 }
 
 interface IStreetRepository {
-  save({ data }: ISaveStreetDataDTO);
-  getRange(locStart: Localization, locEnd: Localization): Street[];
+  save({ name, data }: ISaveStreetDataDTO): Promise<Street>;
+  getAll(): Promise<Street[]>;
 }
 
-export { IStreetRepository, ISaveStreetDataDTO, Data };
+export { IStreetRepository, ISaveStreetDataDTO, IStreetData };

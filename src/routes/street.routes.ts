@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { saveStreetController } from "../modules/street/useCases/saveStreet";
+
+import { GetAllDataController } from "../modules/street/useCases/getAllData/GetAllDataController";
+import { SaveStreetController } from "../modules/street/useCases/saveStreet/SaveStreetController";
 
 const streetRoutes = Router();
 
-streetRoutes.post('/', (request, response) =>
-    saveStreetController.handle(request, response)
-);
+const saveStreetController = new SaveStreetController();
+streetRoutes.post("/", saveStreetController.handle);
+
+const getAllDataController = new GetAllDataController();
+streetRoutes.get("/", getAllDataController.handle);
 
 export { streetRoutes };
