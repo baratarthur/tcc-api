@@ -13,6 +13,12 @@ interface IRequest {
   data: IStreetData[];
 }
 
+enum STREET_QUALITY {
+  OTIMA = "OTIMA",
+  PRECISA_REPAROS = "PRECISA_REPAROS",
+  ESTADO_CRITICO = "ESTADO_CRITICO",
+}
+
 @injectable()
 class SaveStreetUseCase {
   constructor(
@@ -21,13 +27,35 @@ class SaveStreetUseCase {
   ) {}
 
   async execute({ street_name, lat, long, data }: IRequest): Promise<Street> {
+    const media = data.reduce(
+      (acumulador, valor) => acumulador + valor.z_value / data.length,
+      0
+    );
+    const variancia = data.reduce(
+      (acumulador, valor) =>
+        acumulador + (media - valor.z_value) ** 2 / data.length,
+      0
+    );
+    const desvioPadrao = Math.sqrt(variancia);
+
     const street = await this.streetRepository.save({
       name: street_name,
+      quality: this.getStreetQuality(desvioPadrao),
       lat,
       long,
       data,
     });
     return street;
+  }
+
+  getStreetQuality(desvioPadrao: number): string {
+    if (desvioPadrao < 0.3) {
+      return STREET_QUALITY.OTIMA;
+    }
+    if (desvioPadrao < 0.6) {
+      return STREET_QUALITY.PRECISA_REPAROS;
+    }
+    return STREET_QUALITY.ESTADO_CRITICO;
   }
 }
 

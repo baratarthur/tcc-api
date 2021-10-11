@@ -10,13 +10,14 @@ interface IStreetData {
 
 interface ISaveStreetDataDTO {
   name: string;
+  quality: string;
   lat: number;
   long: number;
   data: IStreetData[];
 }
 
 interface IStreetRepository {
-  save({ name, data }: ISaveStreetDataDTO): Promise<Street>;
+  save({ name, quality, lat, long, data }: ISaveStreetDataDTO): Promise<Street>;
   getAll(): Promise<Street[]>;
 }
 
