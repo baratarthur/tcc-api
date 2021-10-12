@@ -47,7 +47,7 @@ class SaveStreetUseCase {
     return street;
   }
 
-  getStreetQuality(desvioPadrao: number): string {
+  getStreetQuality(variancia: number): string {
     if (desvioPadrao < 0.3) {
       return STREET_QUALITY.OTIMA;
     }
