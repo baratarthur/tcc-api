@@ -36,11 +36,10 @@ class SaveStreetUseCase {
         acumulador + (media - valor.z_value) ** 2 / data.length,
       0
     );
-    const desvioPadrao = Math.sqrt(variancia);
 
     const street = await this.streetRepository.save({
       name: street_name,
-      quality: this.getStreetQuality(desvioPadrao),
+      quality: this.getStreetQuality(variancia),
       lat,
       long,
       data,
