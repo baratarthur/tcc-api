@@ -48,10 +48,10 @@ class SaveStreetUseCase {
   }
 
   getStreetQuality(variancia: number): string {
-    if (variancia < 0.3) {
+    if (variancia < 0.275) {
       return STREET_QUALITY.OTIMA;
     }
-    if (variancia < 0.6) {
+    if (variancia < 0.55) {
       return STREET_QUALITY.PRECISA_REPAROS;
     }
     return STREET_QUALITY.ESTADO_CRITICO;
